@@ -39,7 +39,7 @@ vector<int> bdc_helper(vector<int> input){
 		L.push_back(input.at(i));
 
 		for (long unsigned j = i + 1; j < input.size(); j++){
-			if (input.at(j) % L.at(0) == 0){
+			if (L.at(0) % input.at(j) == 0){ 
 				div_pos = j;
 				//cout << "position found with " << vec_to_string(L) << " and " << j << endl;
 				break;
@@ -79,7 +79,7 @@ vector<int> bdc_helper(vector<int> input){
 }
 
 vector<int> biggest_divisible_conglomerate(vector<int> input){
-    sort(input.begin(), input.end());
+    sort(input.begin(), input.end(), greater<int>()); // Sort in descending order
 	//cout << vec_to_string(input) << " Sorted" << endl;
     return bdc_helper(input);
 }   

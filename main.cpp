@@ -20,7 +20,7 @@ int main() {
 	soln = {56, 28, 14, 2};
 	bool second = (answerSet == soln);
 	assert(first || second);
-
+	
 
 	// Test 2
 	values = {10, 5, 3, 15, 20};
