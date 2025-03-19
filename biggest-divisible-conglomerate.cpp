@@ -31,7 +31,8 @@ vector<int> bdc_helper(vector<int> input){
 	}
 	vector<vector<int>> cands;
 	for (int i = 0; i < input.size() - 1; i ++){
-		vector<int> L = input[i];
+		vector<int> L;
+		L.push_back(input.at(i));
 	}
 
 
