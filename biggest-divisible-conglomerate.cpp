@@ -20,11 +20,6 @@ string vec_to_string(vector<int> vec){
 	return str; 
 }
 
-vector<int> biggest_divisible_conglomerate(vector<int> input){
-    sort(input.begin(), input.end());
-    return bdc_helper(input);
-}   
-
 vector<int> bdc_helper(vector<int> input){
 	if (input.size() == 0 || input.size() == 1){
 		return input;
@@ -63,3 +58,11 @@ vector<int> sub_vec(vector<int> vec, int start, int end){
     vector<int> answer(vec.begin() + start, vec.begin() + end);
     return answer;
 }
+
+vector<int> biggest_divisible_conglomerate(vector<int> input){
+    sort(input.begin(), input.end());
+    return bdc_helper(input);
+}   
+
+
+
