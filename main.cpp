@@ -32,8 +32,8 @@ int main() {
 	// assert(answerSet2 == soln);
 
 	
-	vector<int> vint = {2, 3, 4, 5};
-	cout << vec_to_string(vint) << endl;
+	vector<int> vint = {100, 2, 3, 4, 5, 7, 14, 21, 25, 30, 49, 70, 77};
+	//cout << vec_to_string(vint) << endl;
 
 	vector<int> cand = biggest_divisible_conglomerate(vint);
 	cout << vec_to_string(cand) << endl;
