@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <set>
 
 #include "bdc.h"
 
@@ -57,6 +58,7 @@ vector<int> bdc_helper(vector<int> input){
 
 	for (size_t i = 0; i < input.size(); i++){
 		vector<int> L = {input[i]};
+		set<int> L_set;
 
 		int j = find_next_div_pos(input, i + 1, L.back());
 		while (j != -1){
@@ -67,6 +69,9 @@ vector<int> bdc_helper(vector<int> input){
 			}
 			j = find_next_div_pos(input, j + 1, L.back());
 		}
+		L_set.insert(L.begin(), L.end());
+		L.clear();
+		L.assign(L_set.begin(), L_set.end());
 		cands.push_back(L); // Add candidate 
 
 	}
