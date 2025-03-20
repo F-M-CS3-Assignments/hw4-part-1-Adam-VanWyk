@@ -1,6 +1,5 @@
 
 #include <vector>
-#include <string>
 #include <iostream>
 #include <algorithm>
 
@@ -15,72 +14,67 @@ string vec_to_string(vector<int> vec){
 		str.append(to_string(vec[i])); 
 		str.append(", ");
 	}
-	str.erase(str.size() - 2, 2);
+	if (!vec.empty()){
+		str.erase(str.size() - 2, 2);
+	}
 	str.append("]");
 	return str; 
 }
 
-vector<int> sub_vec(vector<int> vec, int start, int end){
-    vector<int> answer(vec.begin() + start, vec.begin() + end);
-    return answer;
+int find_next_div_pos(vector<int> input, int idx, int mod){
+	for (size_t i = idx; i < input.size(); i++){
+		if (input[i] % mod == 0){
+			return i; // return position of next divisor
+		}
+	}
+	return -1; // no divisor found
+}
+
+vector<int> sub_vec(vector<int> vec, int start){
+	if (start >= vec.size()){
+		return {}; // invalid index
+	}
+    return vector<int> (vec.begin() + start, vec.end());
+
+}
+
+vector<int> longest_vec(vector<vector<int>> cands){
+	vector<int> longest;
+	for (const auto& vec : cands){
+		if (vec.size() > longest.size()){
+			longest = vec;
+		}
+	}
+	return longest;
 }
 
 vector<int> bdc_helper(vector<int> input){
-	if (input.size() == 0 || input.size() == 1){
+	if (input.size() <= 1){
 		return input;
 	}
 
 	vector<vector<int>> cands;
 
-	for (long unsigned i = 0; i < input.size(); i ++){
-		int div_pos = input.size();
+	for (size_t i = 0; i < input.size(); i++){
+		vector<int> L = {input[i]};
 
-		vector<int> L;
-		L.push_back(input.at(i));
-
-		for (long unsigned j = i + 1; j < input.size(); j++){
-			if (L.at(0) % input.at(j) == 0){ 
-				div_pos = j;
-				//cout << "position found with " << vec_to_string(L) << " and " << j << endl;
-				break;
+		int j = find_next_div_pos(input, i + 1, L.back());
+		while (j != -1){
+			vector<int> Rin = sub_vec(input, j);
+			vector<int> R = bdc_helper(Rin); // recursion
+			if (!R.empty() && (R.front() % L.back() == 0)){
+				L.insert(L.end(), R.begin(), R.end()); // combine
 			}
+			j = find_next_div_pos(input, j + 1, L.back());
 		}
-		if (div_pos == input.size() || div_pos <= i){
-			cands.push_back(L); // store L with no valid
-			continue;
-		}
+		cands.push_back(L); // Add candidate 
 
-		vector<int> Rin = sub_vec(input, div_pos, input.size());
-		
-		if (Rin.empty()){
-			cands.push_back(L);
-		} else {
-			vector<int> R = bdc_helper(Rin);
-
-			vector<int> cand_v;
-			copy(L.begin(), L.end(), back_inserter(cand_v));
-			copy(R.begin(), R.end(), back_inserter(cand_v));
-
-			//cout << vec_to_string(cand_v) << "cand_v printed" << endl;
-			cands.push_back(cand_v);
-		}
 	}
-
-	if (!cands.empty()){
-		vector<int> long_cand = cands.at(0);
-		for ( const auto& cand : cands){
-			if (cand.size() > long_cand.size()){
-				long_cand = cand;
-			}
-		}
-		return long_cand;
-	}
-	return input;
+	return longest_vec(cands);
 }
 
 vector<int> biggest_divisible_conglomerate(vector<int> input){
-    sort(input.begin(), input.end(), greater<int>()); // Sort in descending order
-	//cout << vec_to_string(input) << " Sorted" << endl;
+    sort(input.begin(), input.end()); // Sort in ascending order
     return bdc_helper(input);
 }   
 
