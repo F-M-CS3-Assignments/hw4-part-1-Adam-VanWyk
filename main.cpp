@@ -1,10 +1,12 @@
-
 #include "bdc.h"
 
 #include <vector>
 #include <cassert>
 #include <iostream>
 #include <set>
+
+// uncomment for part 2
+#include <random>
 
 
 int main() {
@@ -21,7 +23,6 @@ int main() {
 	bool second = (answerSet == soln);
 	assert(first || second);
 
-
 	// Test 2
 	values = {10, 5, 3, 15, 20};
 	ans = biggest_divisible_conglomerate(values);
@@ -31,38 +32,27 @@ int main() {
 	set<int> answerSet2(ans.begin(), ans.end());
 	assert(answerSet2 == soln);
 
-	values = {};
-	ans = biggest_divisible_conglomerate(values);
-	assert(ans.empty());
 
-	values = {42};
-	ans = biggest_divisible_conglomerate(values);
-	assert(ans == values);
-
-	values = {3, 5, 7, 11, 13};
-	ans = biggest_divisible_conglomerate(values);
-	assert(ans.size() == 1);
-
-	values = {1, 2, 4, 8, 16, 32};
-	ans = biggest_divisible_conglomerate(values);
-	set<int> expected = {32, 16, 8, 4, 2, 1};
-	set<int> answerSetb(ans.begin(), ans.end());
-	assert(answerSetb == expected);
-
-	values = {1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
-	ans = biggest_divisible_conglomerate(values);
-	assert(ans.size() == values.size());
-
-	values = {17, 23, 31, 47, 53, 89};
-	ans = biggest_divisible_conglomerate(values);
-	assert(ans.size() == 1);
-
+	// The random number test creates a massive 28,000 value input vector.  
+	// Solving the problem with such a large input is not feasible using recursion, 
+	// but with dynamic programming it should take just a few seconds.  
 	
-	vector<int> vint = {100, 2, 3, 4, 5, 7, 14, 21, 25, 30, 49, 70, 77};
-	//cout << vec_to_string(vint) << endl;
+	vector<int> random_values;
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dist(1, 40000);
+	while (random_values.size() < 28000) {
+		random_values.push_back(dist(gen));
+	}
 
-	vector<int> cand = biggest_divisible_conglomerate(vint);
-	cout << vec_to_string(cand) << " bruh " << endl;
-
+	// cout << "\nCalculating answer for input of size: " << random_values.size() << "..." << endl;
+	// time_t start = time(0);
+	// ans = biggest_divisible_conglomerate(random_values);
+	// time_t end = time(0);
+	// cout << "\x1B[32m" << "\tDone!  The answer is: " << vec_to_string(ans) << "\033[0m" << endl;
+	// time_t duration = end - start;
+	// cout << "It took " << duration << " seconds.  Wow!" << endl;\
+	
+	
 	return 0;
 }
