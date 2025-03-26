@@ -49,46 +49,38 @@ vector<int> longest_vec(vector<vector<int>> cands){
 	return longest;
 }
 
-vector<int> bdc_helper_dynamic(vector<int> input){
-    if (input.size() == 0 || input.size() == 1){
-        return input;
-    } 
+vector<int> bdc_helper(vector<int> input){
+	if (input.size() <= 1){
+		return input;
+	}
 
-    
+	vector<vector<int>> cands;
+
+	for (size_t i = 0; i < input.size(); i++){
+		vector<int> L = {input[i]};
+		set<int> L_set;
+
+		int j = find_next_div_pos(input, i + 1, L.back());
+		while (j != -1){
+			vector<int> Rin = sub_vec(input, j);
+			vector<int> R = bdc_helper(Rin); // recursion
+			if (!R.empty() && (R.front() % L.back() == 0)){
+				L.insert(L.end(), R.begin(), R.end()); // combine
+			}
+			j = find_next_div_pos(input, j + 1, L.back());
+		}
+		L_set.insert(L.begin(), L.end());
+		L.clear();
+		L.assign(L_set.begin(), L_set.end());
+		cands.push_back(L); // Add candidate 
+
+	}
+	return longest_vec(cands);
 }
-
-// vector<int> bdc_helper(vector<int> input){
-// 	if (input.size() <= 1){
-// 		return input;
-// 	}
-
-// 	vector<vector<int>> cands;
-
-// 	for (size_t i = 0; i < input.size(); i++){
-// 		vector<int> L = {input[i]};
-// 		set<int> L_set;
-
-// 		int j = find_next_div_pos(input, i + 1, L.back());
-// 		while (j != -1){
-// 			vector<int> Rin = sub_vec(input, j);
-// 			vector<int> R = bdc_helper(Rin); // recursion
-// 			if (!R.empty() && (R.front() % L.back() == 0)){
-// 				L.insert(L.end(), R.begin(), R.end()); // combine
-// 			}
-// 			j = find_next_div_pos(input, j + 1, L.back());
-// 		}
-// 		L_set.insert(L.begin(), L.end());
-// 		L.clear();
-// 		L.assign(L_set.begin(), L_set.end());
-// 		cands.push_back(L); // Add candidate 
-
-// 	}
-// 	return longest_vec(cands);
-// }
 
 vector<int> biggest_divisible_conglomerate(vector<int> input){
     sort(input.begin(), input.end()); // Sort in ascending order
-    return bdc_helper_dynamic(input);
+    return bdc_helper(input);
 }   
 
 
