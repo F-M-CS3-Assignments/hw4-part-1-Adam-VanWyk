@@ -53,8 +53,17 @@ vector<int> bdc_helper_dynamic(vector<int> input){
     if (input.size() == 0 || input.size() == 1){
         return input;
     } 
+    cout << vec_to_string(input) << endl;
+    //cout << input.size() << endl;
+
+    int** index = new int*[input.size()];
+    for (unsigned long i = 0; i < input.size(); i++){
+        index[i] = new int[input.size()];
+    }
 
     
+
+    return input;
 }
 
 // vector<int> bdc_helper(vector<int> input){
@@ -90,6 +99,13 @@ vector<int> biggest_divisible_conglomerate(vector<int> input){
     sort(input.begin(), input.end()); // Sort in ascending order
     return bdc_helper_dynamic(input);
 }   
+
+int main(){
+    vector<int> tester = {3, 5, 6, 10, 20};
+    vector<int> ans = biggest_divisible_conglomerate(tester);
+    cout << vec_to_string(ans) << endl;
+
+}
 
 
 
