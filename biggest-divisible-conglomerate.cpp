@@ -24,21 +24,20 @@ string vec_to_string(vector<int> vec){
 
 int longest_vec(vector<vector<int>> cands){
 	unsigned long longest = 0;
+	int index = -1;
 	for (unsigned long i = 0; i < cands.size(); i++){
 		if (cands.at(i).size() > longest){
-			longest = i;
+			longest = cands.at(i).size();
+			index = i;
 		}
 	}	
-	return longest;
+	return index;
 }
 
 vector<int> bdc_helper_dynamic(vector<int> input){
     if (input.size() == 0 || input.size() == 1){
         return input;
     } 
-    cout << vec_to_string(input) << endl;
-    //cout << input.size() << endl;
-
     vector<vector<int>> index(input.size());
     for (unsigned long i = 0; i < input.size(); i++){
         index.at(i) = {input.at(i)};
@@ -57,6 +56,7 @@ vector<int> bdc_helper_dynamic(vector<int> input){
 		}
 
 	}
+	
 	int max_idx = longest_vec(index);
     return index.at(max_idx);
 }
@@ -65,13 +65,4 @@ vector<int> biggest_divisible_conglomerate(vector<int> input){
     sort(input.begin(), input.end()); // Sort in ascending order
     return bdc_helper_dynamic(input);
 }   
-
-// int main(){
-//     vector<int> tester = {3, 5, 6, 10, 20};
-//     vector<int> ans = biggest_divisible_conglomerate(tester);
-//     cout << vec_to_string(ans) << endl;
-
-// }
-
-
 
